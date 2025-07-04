@@ -1,0 +1,11 @@
+---
+- name: Gather universal system information
+  hosts: 192.168.122.236
+  become: true
+  tasks:
+    - name: Print hello message
+      debug:
+        msg: "Hello from AWX!"
+    - name: Simple debug test
+      debug:
+        msg: "Hello from AWX debug!"
