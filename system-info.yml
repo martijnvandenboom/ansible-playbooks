@@ -3,7 +3,7 @@
   hosts: 192.168.122.236
   become: true
   tasks:
-    - name: Display resolv.conf contents
+    - name: Update /tmp/hello_world.txt
       command: echo "$(date) - Hello World!" >> /tmp/hello_world.txt
     - name: Display resolv.conf contents
       command: cat resolv.conf chdir=/etc
@@ -32,7 +32,6 @@
       debug:
         msg: |
           Total RAM: {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
-          Available RAM: {{ (ansible_memory_mb.free / 1024) | round(2) }} GB
     - name: Show disk usage (root mount)
       debug:
         msg: |
