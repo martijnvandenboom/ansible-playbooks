@@ -4,6 +4,8 @@
   become: true
   tasks:
     - name: Display resolv.conf contents
+      command: echo "$(date) - Hello World!" >> /tmp/hello_world.txt
+    - name: Display resolv.conf contents
       command: cat resolv.conf chdir=/etc
       register: command_output
     - name: Print to console
