@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Update /tmp/hello_world.txt
-      command: echo "$(date) - Hello World!" >> /tmp/hello_world.txt
+      shell: echo "$(date) - Hello World!" >> /tmp/hello_world.txt
     - name: Display resolv.conf contents
       command: cat resolv.conf chdir=/etc
       register: command_output
