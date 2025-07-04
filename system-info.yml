@@ -6,47 +6,47 @@
 
   tasks:
 
-    - name: Print OS information
+    - name: Show OS and kernel info
       debug:
-        msg:
-          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
-          - "Kernel: {{ ansible_kernel }}"
-          - "Architecture: {{ ansible_architecture }}"
+        msg: |
+          OS: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Kernel: {{ ansible_kernel }}
+          Architecture: {{ ansible_architecture }}
 
-    - name: Print CPU info
+    - name: Show CPU information
       debug:
-        msg:
-          - "Processor(s): {{ ansible_processor_cores }} cores per CPU x {{ ansible_processor_count }} CPUs"
-          - "CPU Model: {{ ansible_processor[1] if ansible_processor | length > 1 else ansible_processor[0] }}"
+        msg: |
+          CPUs: {{ ansible_processor_count }} physical x {{ ansible_processor_cores }} cores each
+          CPU Model: {{ ansible_processor[-1] }}
 
-    - name: Print Memory info
+    - name: Show memory information
       debug:
-        msg:
-          - "Total RAM: {{ (ansible_memtotal_mb / 1024) | round(1) }} GB"
-          - "Free RAM: {{ (ansible_memory_mb.real.free / 1024) | round(1) }} GB"
+        msg: |
+          Total RAM: {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
+          Available RAM: {{ (ansible_memory_mb.real.available / 1024) | round(2) }} GB
 
-    - name: Print Disk info (root filesystem)
+    - name: Show disk usage (root mount)
       debug:
-        msg:
-          - "Root FS Total: {{ ansible_mounts[0].size_total | int // 1024**3 }} GB"
-          - "Root FS Available: {{ ansible_mounts[0].size_available | int // 1024**3 }} GB"
+        msg: |
+          Root FS Total: {{ (ansible_mounts[0].size_total / 1024**3) | int }} GB
+          Root FS Available: {{ (ansible_mounts[0].size_available / 1024**3) | int }} GB
 
-    - name: Print IP addresses
+    - name: Show network information
       debug:
-        msg:
-          - "Hostname: {{ ansible_fqdn }}"
-          - "Primary IP: {{ ansible_default_ipv4.address }}"
-          - "Interfaces: {{ ansible_interfaces | difference(['lo']) }}"
+        msg: |
+          Hostname: {{ ansible_fqdn }}
+          Primary IP: {{ ansible_default_ipv4.address }}
+          Interfaces: {{ ansible_interfaces | difference(['lo']) | join(', ') }}
 
-    - name: Print package manager used
+    - name: Show package manager
       debug:
         msg: "Package Manager: {{ ansible_pkg_mgr }}"
 
-    - name: Print uptime
+    - name: Show system uptime
       command: uptime -p
-      register: uptime_output
+      register: uptime_result
 
-    - name: Show uptime
+    - name: Display uptime
       debug:
-        msg: "Uptime: {{ uptime_output.stdout }}"
+        msg: "Uptime: {{ uptime_result.stdout }}"
 
