@@ -1,6 +1,6 @@
 ---
 - name: Gather universal system information
-  hosts: all
+  hosts: 192.168.122.236
   become: false
   gather_facts: true
 
