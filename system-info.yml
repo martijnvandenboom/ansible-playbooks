@@ -52,6 +52,3 @@
     - name: Display uptime
       debug:
         msg: "Uptime: {{ uptime_result.stdout }}"
-    - name: Dump all gathered facts (may be very verbose)
-      debug:
-        var: ansible_facts
