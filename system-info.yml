@@ -17,12 +17,10 @@
     - name: Print hello message
       debug:
         msg: "Hello from AWX!"
-        verbosity: 0
 
     - name: Simple debug test
       debug:
         msg: "Hello from AWX debug!"
-        verbosity: 1
 
     - name: Show OS and kernel info
       debug:
@@ -30,28 +28,24 @@
           OS: {{ ansible_distribution }} {{ ansible_distribution_version }}
           Kernel: {{ ansible_kernel }}
           Architecture: {{ ansible_architecture }}
-        verbosity: 1
 
     - name: Show CPU information
       debug:
         msg: |
           CPUs: {{ ansible_processor_count }} physical x {{ ansible_processor_cores }} cores each
           CPU Model: {{ ansible_processor[-1] }}
-        verbosity: 1
 
     - name: Show memory information
       debug:
         msg: |
           Total RAM: {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
           Available RAM: {{ (ansible_memory_mb.real.available / 1024) | round(2) }} GB
-        verbosity: 1
 
     - name: Show disk usage (root mount)
       debug:
         msg: |
           Root FS Total: {{ (ansible_mounts[0].size_total / 1024**3) | int }} GB
           Root FS Available: {{ (ansible_mounts[0].size_available / 1024**3) | int }} GB
-        verbosity: 1
 
     - name: Show network information
       debug:
@@ -59,12 +53,10 @@
           Hostname: {{ ansible_fqdn }}
           Primary IP: {{ ansible_default_ipv4.address }}
           Interfaces: {{ ansible_interfaces | difference(['lo']) | join(', ') }}
-        verbosity: 1
 
     - name: Show package manager
       debug:
         msg: "Package Manager: {{ ansible_pkg_mgr }}"
-        verbosity: 1
 
     - name: Show system uptime
       command: uptime -p
@@ -73,9 +65,7 @@
     - name: Display uptime
       debug:
         msg: "Uptime: {{ uptime_result.stdout }}"
-        verbosity: 1
 
     - name: Dump all gathered facts (may be very verbose)
       debug:
         var: ansible_facts
-        verbosity: 1
