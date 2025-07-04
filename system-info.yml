@@ -1,0 +1,52 @@
+---
+- name: Gather universal system information
+  hosts: all
+  become: false
+  gather_facts: true
+
+  tasks:
+
+    - name: Print OS information
+      debug:
+        msg:
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+
+    - name: Print CPU info
+      debug:
+        msg:
+          - "Processor(s): {{ ansible_processor_cores }} cores per CPU x {{ ansible_processor_count }} CPUs"
+          - "CPU Model: {{ ansible_processor[1] if ansible_processor | length > 1 else ansible_processor[0] }}"
+
+    - name: Print Memory info
+      debug:
+        msg:
+          - "Total RAM: {{ (ansible_memtotal_mb / 1024) | round(1) }} GB"
+          - "Free RAM: {{ (ansible_memory_mb.real.free / 1024) | round(1) }} GB"
+
+    - name: Print Disk info (root filesystem)
+      debug:
+        msg:
+          - "Root FS Total: {{ ansible_mounts[0].size_total | int // 1024**3 }} GB"
+          - "Root FS Available: {{ ansible_mounts[0].size_available | int // 1024**3 }} GB"
+
+    - name: Print IP addresses
+      debug:
+        msg:
+          - "Hostname: {{ ansible_fqdn }}"
+          - "Primary IP: {{ ansible_default_ipv4.address }}"
+          - "Interfaces: {{ ansible_interfaces | difference(['lo']) }}"
+
+    - name: Print package manager used
+      debug:
+        msg: "Package Manager: {{ ansible_pkg_mgr }}"
+
+    - name: Print uptime
+      command: uptime -p
+      register: uptime_output
+
+    - name: Show uptime
+      debug:
+        msg: "Uptime: {{ uptime_output.stdout }}"
+
